@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="5f35819d-cd39-4d36-bf26-4291f748aec5" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1479/TemplateManager.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="TemplateManager.wsdl" MetadataType="Wsdl" ID="158bdf71-eb08-4090-8245-b957c7a7a36d" SourceId="1" SourceUrl="http://localhost:1479/TemplateManager.svc?wsdl" />
+    <MetadataFile FileName="TemplateManager.xsd" MetadataType="Schema" ID="88c1a4e2-2d5a-4cdc-b962-a93abe0ef5cc" SourceId="1" SourceUrl="http://localhost:1479/TemplateManager.svc?xsd=xsd1" />
+    <MetadataFile FileName="TemplateManager1.xsd" MetadataType="Schema" ID="15b1523f-23a7-4151-93c9-fd21c254a903" SourceId="1" SourceUrl="http://localhost:1479/TemplateManager.svc?xsd=xsd0" />
+    <MetadataFile FileName="TemplateManager2.xsd" MetadataType="Schema" ID="96841806-8abb-449e-9b37-703eef800f8d" SourceId="1" SourceUrl="http://localhost:1479/TemplateManager.svc?xsd=xsd3" />
+    <MetadataFile FileName="TemplateManager3.xsd" MetadataType="Schema" ID="01e9fa0d-612f-483f-a0a2-6181e6de311e" SourceId="1" SourceUrl="http://localhost:1479/TemplateManager.svc?xsd=xsd2" />
+    <MetadataFile FileName="TemplateManager.disco" MetadataType="Disco" ID="53fcef41-6a56-42eb-b6d5-d8a0d5c9a398" SourceId="1" SourceUrl="http://localhost:1479/TemplateManager.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
