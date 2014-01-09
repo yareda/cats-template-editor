@@ -105,6 +105,12 @@
   <wsdl:message name="ITemplateManager_PreviewTemplate_OutputMessage">
     <wsdl:part name="parameters" element="tns:PreviewTemplateResponse" />
   </wsdl:message>
+  <wsdl:message name="ITemplateManager_DeleteTemplate_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteTemplate" />
+  </wsdl:message>
+  <wsdl:message name="ITemplateManager_DeleteTemplate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteTemplateResponse" />
+  </wsdl:message>
   <wsdl:portType name="ITemplateManager">
     <wsdl:operation name="DoWork">
       <wsdl:input wsaw:Action="http://tempuri.org/ITemplateManager/DoWork" message="tns:ITemplateManager_DoWork_InputMessage" />
@@ -169,6 +175,10 @@
     <wsdl:operation name="PreviewTemplate">
       <wsdl:input wsaw:Action="http://tempuri.org/ITemplateManager/PreviewTemplate" message="tns:ITemplateManager_PreviewTemplate_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITemplateManager/PreviewTemplateResponse" message="tns:ITemplateManager_PreviewTemplate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteTemplate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITemplateManager/DeleteTemplate" message="tns:ITemplateManager_DeleteTemplate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITemplateManager/DeleteTemplateResponse" message="tns:ITemplateManager_DeleteTemplate_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ITemplateManager" type="tns:ITemplateManager">
@@ -311,6 +321,15 @@
     </wsdl:operation>
     <wsdl:operation name="PreviewTemplate">
       <soap:operation soapAction="http://tempuri.org/ITemplateManager/PreviewTemplate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteTemplate">
+      <soap:operation soapAction="http://tempuri.org/ITemplateManager/DeleteTemplate" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

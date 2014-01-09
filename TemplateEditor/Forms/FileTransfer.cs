@@ -46,22 +46,24 @@ namespace TemplateEditor.Forms
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-
-            if (FileList.SelectedItems.Count == 0)
+            if (MessageBox.Show("Delete Template?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                MessageBox.Show("You must select a file to delete");
-            }
-            else
-            {
-                string virtualPath = FileList.SelectedItems[0].SubItems[1].Text;
-
-                using (var client = new TemplateManagerClient())
+                if (FileList.SelectedItems.Count == 0)
                 {
-                    client.DeleteFile(virtualPath);
-                    client.DeleteFile(virtualPath);
+                    MessageBox.Show("You must select a file to delete");
                 }
+                else
+                {
+                    string virtualPath = FileList.SelectedItems[0].SubItems[1].Text;
 
-               FillGrid();
+                    using (var client = new TemplateManagerClient())
+                    {
+                        client.DeleteFile(virtualPath + ".dotx");
+                        client.DeleteTemplate(virtualPath);
+                    }
+
+                    FillGrid();
+                }
             }
 
         }

@@ -480,6 +480,9 @@ namespace TemplateEditor.TemplateService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITemplateManager/PreviewTemplate", ReplyAction="http://tempuri.org/ITemplateManager/PreviewTemplateResponse")]
         string PreviewTemplate(string filePath);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITemplateManager/DeleteTemplate", ReplyAction="http://tempuri.org/ITemplateManager/DeleteTemplateResponse")]
+        void DeleteTemplate(string fileName);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -610,6 +613,10 @@ namespace TemplateEditor.TemplateService {
         
         public string PreviewTemplate(string filePath) {
             return base.Channel.PreviewTemplate(filePath);
+        }
+        
+        public void DeleteTemplate(string fileName) {
+            base.Channel.DeleteTemplate(fileName);
         }
     }
 }
