@@ -47,5 +47,17 @@ namespace TemplateEditor.Properties {
                 this["DefaultPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\dawit\\Documents\\cats\\Web\\Templates\\")]
+        public string TemplatePath {
+            get {
+                return ((string)(this["TemplatePath"]));
+            }
+            set {
+                this["TemplatePath"] = value;
+            }
+        }
     }
 }

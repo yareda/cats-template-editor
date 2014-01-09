@@ -7,6 +7,8 @@ namespace TemplateEditor
         void UploadDocument(int templateType, string path);
         string DownloadDocument(ListView fileList);
         void DeleteDocument(string path);
+      
+        string PreviewDoc(string path);
 
     }
 }

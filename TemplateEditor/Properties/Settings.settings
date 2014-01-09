@@ -8,5 +8,8 @@
     <Setting Name="DefaultPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">c:\</Value>
     </Setting>
+    <Setting Name="TemplatePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\dawit\Documents\cats\Web\Templates\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -45,12 +45,15 @@
             this.btnSave = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.btnLogIn = this.Factory.CreateRibbonButton();
+            this.group6 = this.Factory.CreateRibbonGroup();
+            this.btnPreview = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
             this.group3.SuspendLayout();
             this.group5.SuspendLayout();
             this.group4.SuspendLayout();
+            this.group6.SuspendLayout();
             // 
             // tab1
             // 
@@ -59,8 +62,9 @@
             this.tab1.Groups.Add(this.group2);
             this.tab1.Groups.Add(this.group3);
             this.tab1.Groups.Add(this.group5);
+            this.tab1.Groups.Add(this.group6);
             this.tab1.Groups.Add(this.group4);
-            this.tab1.Label = "TabAddIns";
+            this.tab1.Label = "CATS";
             this.tab1.Name = "tab1";
             // 
             // group1
@@ -118,6 +122,19 @@
             this.btnLogIn.Name = "btnLogIn";
             this.btnLogIn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLogIn_Click);
             // 
+            // group6
+            // 
+            this.group6.Items.Add(this.btnPreview);
+            this.group6.Name = "group6";
+            this.group6.Visible = false;
+            // 
+            // btnPreview
+            // 
+            this.btnPreview.Label = "Preview";
+            this.btnPreview.Name = "btnPreview";
+            this.btnPreview.Visible = false;
+            this.btnPreview.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPreview_Click);
+            // 
             // TemplateRibbon
             // 
             this.Name = "TemplateRibbon";
@@ -136,6 +153,8 @@
             this.group5.PerformLayout();
             this.group4.ResumeLayout(false);
             this.group4.PerformLayout();
+            this.group6.ResumeLayout(false);
+            this.group6.PerformLayout();
 
         }
 
@@ -152,6 +171,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSave;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group4;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLogIn;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group6;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPreview;
     }
 
     partial class ThisRibbonCollection

@@ -100,6 +100,9 @@ namespace TemplateEditor.TemplateService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string FileNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -118,6 +121,19 @@ namespace TemplateEditor.TemplateService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string FileName {
+            get {
+                return this.FileNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.FileNameField, value) != true)) {
+                    this.FileNameField = value;
+                    this.RaisePropertyChanged("FileName");
+                }
             }
         }
         
@@ -458,6 +474,12 @@ namespace TemplateEditor.TemplateService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITemplateManager/InsertToLetterTemplate", ReplyAction="http://tempuri.org/ITemplateManager/InsertToLetterTemplateResponse")]
         void InsertToLetterTemplate(TemplateEditor.TemplateService.LetterTemplate letterTemplate);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITemplateManager/InsertToTemplate", ReplyAction="http://tempuri.org/ITemplateManager/InsertToTemplateResponse")]
+        void InsertToTemplate(TemplateEditor.TemplateService.Template template);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITemplateManager/PreviewTemplate", ReplyAction="http://tempuri.org/ITemplateManager/PreviewTemplateResponse")]
+        string PreviewTemplate(string filePath);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -580,6 +602,14 @@ namespace TemplateEditor.TemplateService {
         
         public void InsertToLetterTemplate(TemplateEditor.TemplateService.LetterTemplate letterTemplate) {
             base.Channel.InsertToLetterTemplate(letterTemplate);
+        }
+        
+        public void InsertToTemplate(TemplateEditor.TemplateService.Template template) {
+            base.Channel.InsertToTemplate(template);
+        }
+        
+        public string PreviewTemplate(string filePath) {
+            return base.Channel.PreviewTemplate(filePath);
         }
     }
 }

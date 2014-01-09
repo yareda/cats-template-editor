@@ -31,8 +31,6 @@
             this.FileList = new System.Windows.Forms.ListView();
             this.FilenameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.FullPathHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.SizeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DeleteButton = new System.Windows.Forms.Button();
             this.DownloadButton = new System.Windows.Forms.Button();
             this.cmbTemplateTypes = new System.Windows.Forms.ComboBox();
@@ -42,9 +40,7 @@
             // 
             this.FileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.FilenameColumnHeader,
-            this.FullPathHeader,
-            this.SizeHeader,
-            this.columnHeader1});
+            this.FullPathHeader});
             this.FileList.FullRowSelect = true;
             this.FileList.GridLines = true;
             this.FileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -57,18 +53,13 @@
             // 
             // FilenameColumnHeader
             // 
-            this.FilenameColumnHeader.Text = "Filename";
-            this.FilenameColumnHeader.Width = 80;
+            this.FilenameColumnHeader.Text = "Template";
+            this.FilenameColumnHeader.Width = 160;
             // 
             // FullPathHeader
             // 
-            this.FullPathHeader.Text = "Storage path";
+            this.FullPathHeader.Text = "File Name";
             this.FullPathHeader.Width = 160;
-            // 
-            // SizeHeader
-            // 
-            this.SizeHeader.Text = "Size";
-            this.SizeHeader.Width = 80;
             // 
             // DeleteButton
             // 
@@ -122,10 +113,8 @@
         private System.Windows.Forms.ListView FileList;
         private System.Windows.Forms.ColumnHeader FilenameColumnHeader;
         private System.Windows.Forms.ColumnHeader FullPathHeader;
-        private System.Windows.Forms.ColumnHeader SizeHeader;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button DownloadButton;
         private System.Windows.Forms.ComboBox cmbTemplateTypes;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }

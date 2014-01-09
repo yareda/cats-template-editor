@@ -10,7 +10,7 @@ namespace TemplateEditor
        {
            if (!string.IsNullOrEmpty(filepath))
            {
-               string virtualPath = AppendToFileName(templateType, Path.GetFileName(filepath));
+               string virtualPath =  Path.GetFileName(filepath);
 
                using (Stream uploadStream = new FileStream(filepath, FileMode.Open))
                {
@@ -36,7 +36,7 @@ namespace TemplateEditor
                var path = item.SubItems[1].Text;
 
 
-               filePath = Properties.Settings.Default.DefaultPath.ToString() + path;
+               filePath = Properties.Settings.Default.TemplatePath.ToString() + path;
                if (!string.IsNullOrEmpty(filePath))
                {
                    // Get the file from the server
@@ -50,6 +50,7 @@ namespace TemplateEditor
                        }
 
                        downloadStream.CopyTo(output);
+                       downloadStream.Close();
                    }
                    return filePath;
 
@@ -68,25 +69,18 @@ namespace TemplateEditor
            }
        }
 
+      
 
 
-       private static string AppendToFileName(int templateType, string fileName)
+      
+
+       public string PreviewDoc(string fileName)
        {
-           switch (templateType)
+           using (var client = new TemplateManagerClient())
            {
-               case 1:
-                   if (fileName.StartsWith("TRANS-"))
-                       return fileName;
-                   return "TRANS-" + fileName;
-               case 2:
-                   if (fileName.StartsWith("GIFT-"))
-                       return fileName;
-                   return "GIFT-" + fileName;
-               default:
-                   return fileName;
-
+               var docFile = client.PreviewTemplate(filePath: fileName);
+               return docFile;
            }
        }
-
     }
 }

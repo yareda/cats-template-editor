@@ -22,6 +22,7 @@
   <xs:element name="ArrayOfTemplate" nillable="true" type="tns:ArrayOfTemplate" />
   <xs:complexType name="Template">
     <xs:sequence>
+      <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Remark" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="TemplateId" type="xs:int" />

@@ -58,6 +58,7 @@ namespace TemplateEditor.Forms
 
         private void DisableRibbon()
         {
+            Globals.Ribbons.TemplateRibbon.btnSave.Enabled = false;
             Globals.Ribbons.TemplateRibbon.btnAddNew.Enabled = false;
             Globals.Ribbons.TemplateRibbon.btnEdit.Enabled = false;
             Globals.Ribbons.TemplateRibbon.btnSetings.Enabled = false;
@@ -66,6 +67,7 @@ namespace TemplateEditor.Forms
 
         private void EnableRibbon()
         {
+            Globals.Ribbons.TemplateRibbon.btnSave.Enabled = true;
             Globals.Ribbons.TemplateRibbon.btnAddNew.Enabled = true;
             Globals.Ribbons.TemplateRibbon.btnEdit.Enabled = true;
             Globals.Ribbons.TemplateRibbon.btnSetings.Enabled = true;
@@ -73,6 +75,11 @@ namespace TemplateEditor.Forms
         }
 
         private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnOk_KeyDown(object sender, KeyEventArgs e)
         {
 
         }

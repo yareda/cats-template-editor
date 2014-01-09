@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -54,6 +56,7 @@ namespace TemplateEditor
 
         private void DisableRibbon()
         {
+            btnSave.Enabled = false;
             btnAddNew.Enabled = false;
             btnEdit.Enabled = false;
             btnSetings.Enabled = false;
@@ -62,6 +65,7 @@ namespace TemplateEditor
 
         private void EnableRibbon()
         {
+            btnSave.Enabled = true;
             btnAddNew.Enabled = true;
             btnEdit.Enabled = true;
             btnSetings.Enabled = true;
@@ -118,7 +122,8 @@ namespace TemplateEditor
                             Title = "Enter the file name of the template",
                         };
                         dlg.ShowDialog();
-                        fileName = dlg.FileName;
+
+                        fileName = Path.GetFileName(dlg.FileName);
                     }
                     break;
                 default:
@@ -129,33 +134,22 @@ namespace TemplateEditor
 
             if (fileName.Trim() == string.Empty)
                 return;
-            aDoc.SaveAs(fileName, WdSaveFormat.wdFormatTemplate);
+            aDoc.SaveAs(fileName, WdSaveFormat.wdFormatXMLTemplate);
             aDoc.Close();
-            documentProcessorService.UploadDocument(1, fileName + ".dot");
-            documentProcessorService.DeleteDocument(fileName + ".dot");
-            InsertToLetterTemplate(fileName, GetTemplateType(fileName));
+            documentProcessorService.UploadDocument(1, fileName + ".dotx");
+            documentProcessorService.DeleteDocument(fileName + ".dotx");
+            InsertToLetterTemplate(fileName ,1);
+            InsertToTemplate(fileName, 1);
             MessageBox.Show("Template is Uploaded.", "Saving", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
         }
 
-        private int GetTemplateType(string fileName)
-        {
-            fileName = fileName.Substring(3);
-           
-            if (fileName.StartsWith("TRANS-"))
-                return 1;
-            if (fileName.StartsWith("GIFT-"))
-                return 2;
-            return 0;
-
-
-
-        }
+      
 
         private void InsertToLetterTemplate(string name, int templateType)
         {
-            name = name.Substring(3);
+          
             var letter = new LetterTemplate()
             {
                 Name = name,
@@ -166,6 +160,78 @@ namespace TemplateEditor
             var client = new TemplateManagerClient();
             client.InsertToLetterTemplate(letter);
 
+        }
+
+
+        private void InsertToTemplate(string name, int templateType)
+        {
+
+            var letter = new TemplateEditor.TemplateService.Template()
+            {
+                Name = name,
+                FileName = name,
+                TemplateType = templateType
+            };
+
+            var client = new TemplateManagerClient();
+            client.InsertToTemplate(letter);
+
+        }
+
+        private void btnPreview_Click(object sender, RibbonControlEventArgs e)
+        {
+
+            saveTemporarly();
+
+        }
+
+        private void saveTemporarly()
+        {
+            IDocumentProcessorService documentProcessorService = new DocumentProcessorService();
+
+
+            _Application wordApp;
+            try
+            {
+                wordApp = (_Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
+            }
+            catch (Exception)
+            {
+
+                wordApp = new Microsoft.Office.Interop.Word.Application();
+            }
+
+           
+            var aDoc = wordApp.ActiveDocument;
+            var fileName = aDoc.Name;
+            int dotPosition = fileName.IndexOf(".", 1, System.StringComparison.Ordinal);
+
+            switch (dotPosition)
+            {
+                case -1:
+                    {
+                        
+                        fileName = Guid.NewGuid().ToString();
+                        aDoc.SaveAs(fileName, WdSaveFormat.wdFormatTemplate);
+                        aDoc.Close();
+                        documentProcessorService.UploadDocument(1, fileName + ".dot");
+                        documentProcessorService.DeleteDocument(fileName + ".dot");
+                    }
+                    break;
+                default:
+                    fileName = fileName.Substring(0, aDoc.Name.Length - (aDoc.Name.Length - dotPosition));
+                    fileName = Properties.Settings.Default.DefaultPath.ToString() + fileName;
+                    aDoc.SaveAs(fileName, WdSaveFormat.wdFormatTemplate);
+                    aDoc.Close();
+                    documentProcessorService.UploadDocument(1, fileName + ".dot");
+                    documentProcessorService.DeleteDocument(fileName + ".dot");
+
+                    break;
+            }
+
+            //var docFile = documentProcessorService.PreviewDoc(1,fileName + ".dot");
+            //Process.Start("WINWORD.EXE", docFile + "dotx");
+            
         }
     }
 }

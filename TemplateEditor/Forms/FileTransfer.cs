@@ -17,10 +17,24 @@ namespace TemplateEditor.Forms
         {
             
             GetTemplateTypes();
-            RefreshFileList();
-            
+            FillGrid();
+
         }
 
+        private void FillGrid()
+        {
+            var templateType = (int) cmbTemplateTypes.SelectedValue;
+            var client = new TemplateManagerClient();
+            var templates = client.GetTemplates(templateType);
+            FileList.Items.Clear();
+            foreach (var template in templates)
+            {
+
+                ListViewItem item = new ListViewItem(template.Name);
+                item.SubItems.Add(template.FileName);
+                FileList.Items.Add(item);
+            }
+        }
         private void RefreshFileList()
         {
             StorageFileInfo[] files = null;

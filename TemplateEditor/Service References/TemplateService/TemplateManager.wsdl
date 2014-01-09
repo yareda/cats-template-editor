@@ -93,6 +93,18 @@
   <wsdl:message name="ITemplateManager_InsertToLetterTemplate_OutputMessage">
     <wsdl:part name="parameters" element="tns:InsertToLetterTemplateResponse" />
   </wsdl:message>
+  <wsdl:message name="ITemplateManager_InsertToTemplate_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertToTemplate" />
+  </wsdl:message>
+  <wsdl:message name="ITemplateManager_InsertToTemplate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertToTemplateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITemplateManager_PreviewTemplate_InputMessage">
+    <wsdl:part name="parameters" element="tns:PreviewTemplate" />
+  </wsdl:message>
+  <wsdl:message name="ITemplateManager_PreviewTemplate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PreviewTemplateResponse" />
+  </wsdl:message>
   <wsdl:portType name="ITemplateManager">
     <wsdl:operation name="DoWork">
       <wsdl:input wsaw:Action="http://tempuri.org/ITemplateManager/DoWork" message="tns:ITemplateManager_DoWork_InputMessage" />
@@ -149,6 +161,14 @@
     <wsdl:operation name="InsertToLetterTemplate">
       <wsdl:input wsaw:Action="http://tempuri.org/ITemplateManager/InsertToLetterTemplate" message="tns:ITemplateManager_InsertToLetterTemplate_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITemplateManager/InsertToLetterTemplateResponse" message="tns:ITemplateManager_InsertToLetterTemplate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertToTemplate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITemplateManager/InsertToTemplate" message="tns:ITemplateManager_InsertToTemplate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITemplateManager/InsertToTemplateResponse" message="tns:ITemplateManager_InsertToTemplate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PreviewTemplate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITemplateManager/PreviewTemplate" message="tns:ITemplateManager_PreviewTemplate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITemplateManager/PreviewTemplateResponse" message="tns:ITemplateManager_PreviewTemplate_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ITemplateManager" type="tns:ITemplateManager">
@@ -273,6 +293,24 @@
     </wsdl:operation>
     <wsdl:operation name="InsertToLetterTemplate">
       <soap:operation soapAction="http://tempuri.org/ITemplateManager/InsertToLetterTemplate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertToTemplate">
+      <soap:operation soapAction="http://tempuri.org/ITemplateManager/InsertToTemplate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PreviewTemplate">
+      <soap:operation soapAction="http://tempuri.org/ITemplateManager/PreviewTemplate" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

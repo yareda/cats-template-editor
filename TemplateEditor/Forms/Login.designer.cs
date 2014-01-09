@@ -81,6 +81,7 @@
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(205, 20);
             this.txtUserName.TabIndex = 4;
+            this.txtUserName.Text = "Admin";
             // 
             // txtPassword
             // 
@@ -90,9 +91,11 @@
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(205, 20);
             this.txtPassword.TabIndex = 5;
+            this.txtPassword.Text = "Password";
             // 
             // Login
             // 
+            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(339, 97);
