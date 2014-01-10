@@ -46,7 +46,7 @@ namespace TemplateEditor
 
                        using (var client = new TemplateManagerClient())
                        {
-                           downloadStream = client.GetFile(path + ".dotx");
+                           downloadStream = client.GetFile(path);
                        }
 
                        downloadStream.CopyTo(output);

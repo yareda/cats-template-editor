@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,8 @@ namespace TemplateEditor
         private void TemplateRibbon_Load(object sender, RibbonUIEventArgs e)
         {
             DisableRibbon();
-            //InitLoginForm();
+           
+
         }
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
@@ -38,16 +40,7 @@ namespace TemplateEditor
             editTemp.ShowDialog();
         }
 
-        private void btnSave_Click(object sender, RibbonControlEventArgs e)
-        {
-            //Microsoft.Office.Interop.Word.Application oWord = new Application();
-
-            //oWord.Visible = true;
-
-            //var oDoc = oWord.Documents.Add();
-
-        }
-
+       
         private void btnLogIn_Click(object sender, RibbonControlEventArgs e)
         {
             var login = new Login();
@@ -60,6 +53,7 @@ namespace TemplateEditor
             btnAddNew.Enabled = false;
             btnEdit.Enabled = false;
             btnSetings.Enabled = false;
+            btnTemplate.Enabled = false;
 
         }
 
@@ -70,6 +64,7 @@ namespace TemplateEditor
             btnEdit.Enabled = true;
             btnSetings.Enabled = true;
             btnLogIn.Visible = false;
+            btnTemplate.Enabled = false;
         }
 
         public void InitLoginForm()
@@ -104,8 +99,12 @@ namespace TemplateEditor
                 wordApp = new Microsoft.Office.Interop.Word.Application();
             }
 
-            string newFileName;
+           
             var aDoc = wordApp.ActiveDocument;
+           
+
+            
+
             string fileName = aDoc.Name;
 
             int dotPosition = fileName.IndexOf(".", 1, System.StringComparison.Ordinal);
@@ -120,6 +119,7 @@ namespace TemplateEditor
                             RestoreDirectory = true,
                             OverwritePrompt = true,
                             Title = "Enter the file name of the template",
+
                         };
                         dlg.ShowDialog();
 
@@ -128,13 +128,26 @@ namespace TemplateEditor
                     break;
                 default:
                     fileName = fileName.Substring(0, aDoc.Name.Length - (aDoc.Name.Length - dotPosition));
-                    //fileName = Properties.Settings.Default.DefaultPath.ToString() + fileName;
+                  
                     break;
             }
 
+            //OBJECT OF MISSING "NULL VALUE"
+            Object oMissing = Type.Missing;
+
             if (fileName.Trim() == string.Empty)
                 return;
-            aDoc.SaveAs(fileName, WdSaveFormat.wdFormatXMLTemplate);
+
+           
+
+
+            Object oSaveAsFile = (Object)fileName;
+
+            aDoc.SaveAs(oSaveAsFile,WdSaveFormat.wdFormatXMLTemplate,  ref oMissing, ref oMissing,
+                            ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                            ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                            ref oMissing, ref oMissing);
+
             aDoc.Close();
             documentProcessorService.UploadDocument(1, fileName + ".dotx");
             documentProcessorService.DeleteDocument(fileName + ".dotx");
@@ -178,60 +191,60 @@ namespace TemplateEditor
 
         }
 
-        private void btnPreview_Click(object sender, RibbonControlEventArgs e)
+       
+        
+
+        private void btnTemplate_Click(object sender, RibbonControlEventArgs e)
         {
-
-            saveTemporarly();
-
-        }
-
-        private void saveTemporarly()
-        {
-            IDocumentProcessorService documentProcessorService = new DocumentProcessorService();
-
-
-            _Application wordApp;
-            try
-            {
-                wordApp = (_Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
-            }
-            catch (Exception)
-            {
-
-                wordApp = new Microsoft.Office.Interop.Word.Application();
-            }
-
+            DocumentProcessorService documentProcessorService= new DocumentProcessorService();  
            
-            var aDoc = wordApp.ActiveDocument;
-            var fileName = aDoc.Name;
-            int dotPosition = fileName.IndexOf(".", 1, System.StringComparison.Ordinal);
+            _Document aDoc = new Document();
+            Object oMissing = Type.Missing;
 
-            switch (dotPosition)
+           aDoc.Activate();
+           Object oSaveAsFile = (Object)Guid.NewGuid().ToString();
+
+           //Insert a paragraph at the beginning of the document.
+           
+           Paragraph oPara1;
+           oPara1 = aDoc.Content.Paragraphs.Add(ref oMissing);
+           oPara1.Range.Text = "New Template. You can create a new template from this document.";
+           oPara1.Range.Font.Bold = 1;
+           oPara1.Format.SpaceAfter = 24;    //24 pt spacing after paragraph.
+           oPara1.Range.InsertParagraphAfter();
+
+
+            aDoc.SaveAs(oSaveAsFile, WdSaveFormat.wdFormatXMLTemplate, ref oMissing, ref oMissing,
+                            ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                            ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                            ref oMissing, ref oMissing);
+           
+            aDoc.Close();
+            documentProcessorService.UploadDocument(1, oSaveAsFile + ".dotx");
+           
+            var  filePath = Properties.Settings.Default.TemplatePath.ToString(CultureInfo.InvariantCulture) + oSaveAsFile;
+            if (!string.IsNullOrEmpty(filePath))
             {
-                case -1:
-                    {
-                        
-                        fileName = Guid.NewGuid().ToString();
-                        aDoc.SaveAs(fileName, WdSaveFormat.wdFormatTemplate);
-                        aDoc.Close();
-                        documentProcessorService.UploadDocument(1, fileName + ".dot");
-                        documentProcessorService.DeleteDocument(fileName + ".dot");
-                    }
-                    break;
-                default:
-                    fileName = fileName.Substring(0, aDoc.Name.Length - (aDoc.Name.Length - dotPosition));
-                    fileName = Properties.Settings.Default.DefaultPath.ToString() + fileName;
-                    aDoc.SaveAs(fileName, WdSaveFormat.wdFormatTemplate);
-                    aDoc.Close();
-                    documentProcessorService.UploadDocument(1, fileName + ".dot");
-                    documentProcessorService.DeleteDocument(fileName + ".dot");
+                //Get the file from the server
+                using (var output = new FileStream(filePath, FileMode.Create))
+                {
+                    Stream downloadStream;
 
-                    break;
+                    using (var client = new TemplateManagerClient())
+                    {
+                        downloadStream = client.GetFile(oSaveAsFile.ToString());
+                    }
+
+                    downloadStream.CopyTo(output);
+                    downloadStream.Close();
+                }
+                Process.Start("WINWORD.EXE", filePath + ".DOTX");
             }
 
-            //var docFile = documentProcessorService.PreviewDoc(1,fileName + ".dot");
-            //Process.Start("WINWORD.EXE", docFile + "dotx");
-            
+        
         }
+
+        
+            
     }
 }

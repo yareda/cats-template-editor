@@ -91,7 +91,7 @@
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(205, 20);
             this.txtPassword.TabIndex = 5;
-            this.txtPassword.Text = "Password";
+            this.txtPassword.Text = "password";
             // 
             // Login
             // 

@@ -43,17 +43,20 @@
             this.btnEdit = this.Factory.CreateRibbonButton();
             this.group5 = this.Factory.CreateRibbonGroup();
             this.btnSave = this.Factory.CreateRibbonButton();
-            this.group4 = this.Factory.CreateRibbonGroup();
-            this.btnLogIn = this.Factory.CreateRibbonButton();
             this.group6 = this.Factory.CreateRibbonGroup();
             this.btnPreview = this.Factory.CreateRibbonButton();
+            this.group4 = this.Factory.CreateRibbonGroup();
+            this.btnLogIn = this.Factory.CreateRibbonButton();
+            this.group7 = this.Factory.CreateRibbonGroup();
+            this.btnTemplate = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
             this.group3.SuspendLayout();
             this.group5.SuspendLayout();
-            this.group4.SuspendLayout();
             this.group6.SuspendLayout();
+            this.group4.SuspendLayout();
+            this.group7.SuspendLayout();
             // 
             // tab1
             // 
@@ -62,6 +65,7 @@
             this.tab1.Groups.Add(this.group2);
             this.tab1.Groups.Add(this.group3);
             this.tab1.Groups.Add(this.group5);
+            this.tab1.Groups.Add(this.group7);
             this.tab1.Groups.Add(this.group6);
             this.tab1.Groups.Add(this.group4);
             this.tab1.Label = "CATS";
@@ -111,17 +115,6 @@
             this.btnSave.Name = "btnSave";
             this.btnSave.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSave_Click_1);
             // 
-            // group4
-            // 
-            this.group4.Items.Add(this.btnLogIn);
-            this.group4.Name = "group4";
-            // 
-            // btnLogIn
-            // 
-            this.btnLogIn.Label = "Log in to CATS";
-            this.btnLogIn.Name = "btnLogIn";
-            this.btnLogIn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLogIn_Click);
-            // 
             // group6
             // 
             this.group6.Items.Add(this.btnPreview);
@@ -133,7 +126,29 @@
             this.btnPreview.Label = "Preview";
             this.btnPreview.Name = "btnPreview";
             this.btnPreview.Visible = false;
-            this.btnPreview.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPreview_Click);
+      
+            // 
+            // group4
+            // 
+            this.group4.Items.Add(this.btnLogIn);
+            this.group4.Name = "group4";
+            // 
+            // btnLogIn
+            // 
+            this.btnLogIn.Label = "Log in to CATS";
+            this.btnLogIn.Name = "btnLogIn";
+            this.btnLogIn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLogIn_Click);
+            // 
+            // group7
+            // 
+            this.group7.Items.Add(this.btnTemplate);
+            this.group7.Name = "group7";
+            // 
+            // btnTemplate
+            // 
+            this.btnTemplate.Label = "New Template";
+            this.btnTemplate.Name = "btnTemplate";
+            this.btnTemplate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnTemplate_Click);
             // 
             // TemplateRibbon
             // 
@@ -151,10 +166,12 @@
             this.group3.PerformLayout();
             this.group5.ResumeLayout(false);
             this.group5.PerformLayout();
-            this.group4.ResumeLayout(false);
-            this.group4.PerformLayout();
             this.group6.ResumeLayout(false);
             this.group6.PerformLayout();
+            this.group4.ResumeLayout(false);
+            this.group4.PerformLayout();
+            this.group7.ResumeLayout(false);
+            this.group7.PerformLayout();
 
         }
 
@@ -173,6 +190,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLogIn;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group6;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPreview;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group7;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnTemplate;
     }
 
     partial class ThisRibbonCollection
