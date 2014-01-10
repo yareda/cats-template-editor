@@ -128,7 +128,7 @@ namespace TemplateEditor
                     break;
                 default:
                     fileName = fileName.Substring(0, aDoc.Name.Length - (aDoc.Name.Length - dotPosition));
-                    fileName = Properties.Settings.Default.DefaultPath.ToString() + fileName;
+                    //fileName = Properties.Settings.Default.DefaultPath.ToString() + fileName;
                     break;
             }
 

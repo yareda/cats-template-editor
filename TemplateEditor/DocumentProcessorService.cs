@@ -39,14 +39,14 @@ namespace TemplateEditor
                filePath = Properties.Settings.Default.TemplatePath.ToString() + path;
                if (!string.IsNullOrEmpty(filePath))
                {
-                   // Get the file from the server
+                    //Get the file from the server
                    using (var output = new FileStream(filePath, FileMode.Create))
                    {
                        Stream downloadStream;
 
                        using (var client = new TemplateManagerClient())
                        {
-                           downloadStream = client.GetFile(path);
+                           downloadStream = client.GetFile(path + ".dotx");
                        }
 
                        downloadStream.CopyTo(output);

@@ -34,6 +34,7 @@ namespace TemplateEditor.Forms
                 item.SubItems.Add(template.FileName);
                 FileList.Items.Add(item);
             }
+            client.Close();
         }
        
 
@@ -60,8 +61,9 @@ namespace TemplateEditor.Forms
                     {
                         client.DeleteFile(virtualPath + ".dotx");
                         client.DeleteTemplate(virtualPath);
+                        client.Close();
                     }
-
+                    
                     FillGrid();
                 }
             }
@@ -87,7 +89,7 @@ namespace TemplateEditor.Forms
                 {
                     this.Close();
                     this.Dispose();
-                    Process.Start("WINWORD.EXE",path);
+                    Process.Start("WINWORD.EXE",path + ".dotx");
                 }
             }
         }
