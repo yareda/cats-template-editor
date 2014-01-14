@@ -40,6 +40,7 @@ namespace TemplateEditor.Forms
 
         private void DownloadButton_Click(object sender, EventArgs e)
         {
+
             Download();
         }
 

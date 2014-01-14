@@ -10,15 +10,19 @@ using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using TemplateEditor.Forms;
 using TemplateEditor.TemplateService;
+using TemplateType = TemplateEditor.Forms.TemplateType;
 
 namespace TemplateEditor
 {
     public partial class TemplateRibbon
     {
+        public int tTemplateType;
+        public string newFileName;
+
         private void TemplateRibbon_Load(object sender, RibbonUIEventArgs e)
         {
             DisableRibbon();
-           
+            GetTemplateTypes();
 
         }
 
@@ -54,6 +58,7 @@ namespace TemplateEditor
             btnEdit.Enabled = false;
             btnSetings.Enabled = false;
             btnTemplate.Enabled = false;
+            
 
         }
 
@@ -65,6 +70,7 @@ namespace TemplateEditor
             btnSetings.Enabled = true;
             btnLogIn.Visible = false;
             btnTemplate.Enabled = false;
+           
         }
 
         public void InitLoginForm()
@@ -83,8 +89,23 @@ namespace TemplateEditor
 
         }
 
+
+        // handles the event from frmId
+        private void TemplateType_ButtonClicked(object sender, TemplateTypeEveArguments e)
+        {
+            // update the forms values from the event args
+            newFileName = e.fFileName;
+            tTemplateType = e.tTemplateType;
+
+        }
+
         private void btnSave_Click_1(object sender, RibbonControlEventArgs e)
         {
+
+            try
+            {
+                
+            
             IDocumentProcessorService documentProcessorService = new DocumentProcessorService();
 
 
@@ -107,31 +128,45 @@ namespace TemplateEditor
 
             string fileName = aDoc.Name;
 
-            int dotPosition = fileName.IndexOf(".", 1, System.StringComparison.Ordinal);
+             int dotPosition = fileName.IndexOf(".", 1, System.StringComparison.Ordinal);
+             fileName = fileName.Substring(0, aDoc.Name.Length - (aDoc.Name.Length - dotPosition));
 
-            switch (dotPosition)
+            if (StringIsGuid(fileName));
             {
-                case -1:
-                    {
-                        // Ask where it should be saved
-                        var dlg = new SaveFileDialog()
-                        {
-                            RestoreDirectory = true,
-                            OverwritePrompt = true,
-                            Title = "Enter the file name of the template",
-
-                        };
-                        dlg.ShowDialog();
-
-                        fileName = Path.GetFileName(dlg.FileName);
-                    }
-                    break;
-                default:
-                    fileName = fileName.Substring(0, aDoc.Name.Length - (aDoc.Name.Length - dotPosition));
-                  
-                    break;
+                var templateType = new TemplateType();
+                templateType.TemplateTypeUpdated +=
+                    new TemplateType.TemplateTypeUpdateHandler(TemplateType_ButtonClicked);
+              
+                templateType.ShowDialog();
+                fileName = newFileName;
             }
+          
 
+            //switch (dotPosition)
+            //{
+            //    case -1:
+            //        {
+            //             Ask where it should be saved
+            //            var dlg = new SaveFileDialog()
+            //            {
+            //                RestoreDirectory = true,
+            //                OverwritePrompt = true,
+            //                Title = "Enter the file name of the template",
+
+            //            };
+            //            dlg.ShowDialog();
+
+            //            fileName = Path.GetFileName(dlg.FileName);
+            //        }
+            //        break;
+            //    default:
+            //        fileName = fileName.Substring(0, aDoc.Name.Length - (aDoc.Name.Length - dotPosition));
+                  
+            //        break;
+            //}
+
+
+           
             //OBJECT OF MISSING "NULL VALUE"
             Object oMissing = Type.Missing;
 
@@ -149,16 +184,37 @@ namespace TemplateEditor
                             ref oMissing, ref oMissing);
 
             aDoc.Close();
-            documentProcessorService.UploadDocument(1, fileName + ".dotx");
+            documentProcessorService.UploadDocument(tTemplateType, fileName + ".dotx");
             documentProcessorService.DeleteDocument(fileName + ".dotx");
-            InsertToLetterTemplate(fileName ,1);
-            InsertToTemplate(fileName, 1);
+            InsertToLetterTemplate(fileName, tTemplateType);
+            InsertToTemplate(fileName, tTemplateType);
             MessageBox.Show("Template is Uploaded.", "Saving", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch
+            {
+                MessageBox.Show("There was a problem in saving the template.", "Saving", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
 
 
         }
 
-      
+        public bool StringIsGuid(string sString)
+        {
+            bool bResult = true;
+            try
+            {
+                
+                new Guid(sString);
+                
+            }
+            catch
+            {
+                bResult = false;
+
+            }
+            return bResult;
+        }
 
         private void InsertToLetterTemplate(string name, int templateType)
         {
@@ -196,55 +252,81 @@ namespace TemplateEditor
 
         private void btnTemplate_Click(object sender, RibbonControlEventArgs e)
         {
-            DocumentProcessorService documentProcessorService= new DocumentProcessorService();  
-           
-            _Document aDoc = new Document();
-            Object oMissing = Type.Missing;
-
-           aDoc.Activate();
-           Object oSaveAsFile = (Object)Guid.NewGuid().ToString();
-
-           //Insert a paragraph at the beginning of the document.
-           
-           Paragraph oPara1;
-           oPara1 = aDoc.Content.Paragraphs.Add(ref oMissing);
-           oPara1.Range.Text = "New Template. You can create a new template from this document.";
-           oPara1.Range.Font.Bold = 1;
-           oPara1.Format.SpaceAfter = 24;    //24 pt spacing after paragraph.
-           oPara1.Range.InsertParagraphAfter();
+            try
+            {
 
 
-            aDoc.SaveAs(oSaveAsFile, WdSaveFormat.wdFormatXMLTemplate, ref oMissing, ref oMissing,
+                DocumentProcessorService documentProcessorService = new DocumentProcessorService();
+
+                _Document aDoc = new Document();
+                Object oMissing = Type.Missing;
+
+                aDoc.Activate();
+                Object oSaveAsFile = (Object) Guid.NewGuid().ToString();
+
+                //Insert a paragraph at the beginning of the document.
+
+                Paragraph oPara1;
+                oPara1 = aDoc.Content.Paragraphs.Add(ref oMissing);
+                oPara1.Range.Text = "New Template. You can create a new template from this document.";
+                oPara1.Range.Font.Bold = 1;
+                oPara1.Format.SpaceAfter = 24; //24 pt spacing after paragraph.
+                oPara1.Range.InsertParagraphAfter();
+
+
+                aDoc.SaveAs(oSaveAsFile, WdSaveFormat.wdFormatXMLTemplate, ref oMissing, ref oMissing,
                             ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
                             ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
                             ref oMissing, ref oMissing);
-           
-            aDoc.Close();
-            documentProcessorService.UploadDocument(1, oSaveAsFile + ".dotx");
-           
-            var  filePath = Properties.Settings.Default.TemplatePath.ToString(CultureInfo.InvariantCulture) + oSaveAsFile;
-            if (!string.IsNullOrEmpty(filePath))
-            {
-                //Get the file from the server
-                using (var output = new FileStream(filePath, FileMode.Create))
+
+                aDoc.Close();
+                documentProcessorService.UploadDocument(1, oSaveAsFile + ".dotx");
+
+                var filePath = Properties.Settings.Default.TemplatePath.ToString(CultureInfo.InvariantCulture) +
+                               oSaveAsFile;
+                if (!string.IsNullOrEmpty(filePath))
                 {
-                    Stream downloadStream;
-
-                    using (var client = new TemplateManagerClient())
+                    //Get the file from the server
+                    using (var output = new FileStream(filePath, FileMode.Create))
                     {
-                        downloadStream = client.GetFile(oSaveAsFile.ToString());
+                        Stream downloadStream;
+
+                        using (var client = new TemplateManagerClient())
+                        {
+                            downloadStream = client.GetFile(oSaveAsFile.ToString());
+                        }
+
+                        downloadStream.CopyTo(output);
+                        downloadStream.Close();
                     }
-
-                    downloadStream.CopyTo(output);
-                    downloadStream.Close();
+                    Process.Start("WINWORD.EXE", filePath + ".DOTX");
                 }
-                Process.Start("WINWORD.EXE", filePath + ".DOTX");
-            }
 
-        
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("There was a problem in creating a new template.", "Creating new Template", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
         }
 
+        private void GetTemplateTypes()
+        {
+            var client = new TemplateManagerClient();
+            var templateTypes = client.GetTemplateTypes();
+
+            foreach (var templateType in templateTypes)
+            {
+                RibbonDropDownItem item = this.Factory.CreateRibbonDropDownItem();
+                item.Label = templateType.TemplateObject.ToString();
+                
+               // cmbTemplateType.Items.Add(item);
+            }
+           
+            client.Close();
+        }
         
             
     }
+
 }

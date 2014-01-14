@@ -63,6 +63,7 @@ namespace TemplateEditor.Forms
             Globals.Ribbons.TemplateRibbon.btnEdit.Enabled = false;
             Globals.Ribbons.TemplateRibbon.btnSetings.Enabled = false;
             Globals.Ribbons.TemplateRibbon.btnTemplate.Enabled = false;
+            
         }
 
         private void EnableRibbon()
@@ -73,6 +74,7 @@ namespace TemplateEditor.Forms
             Globals.Ribbons.TemplateRibbon.btnSetings.Enabled = true;
             Globals.Ribbons.TemplateRibbon.group4.Visible = false;
             Globals.Ribbons.TemplateRibbon.btnTemplate.Enabled = true;
+           
         }
 
         private void Login_Load(object sender, EventArgs e)

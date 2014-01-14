@@ -37,6 +37,8 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.btnSetings = this.Factory.CreateRibbonButton();
+            this.group7 = this.Factory.CreateRibbonGroup();
+            this.btnTemplate = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.btnAddNew = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
@@ -47,25 +49,23 @@
             this.btnPreview = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.btnLogIn = this.Factory.CreateRibbonButton();
-            this.group7 = this.Factory.CreateRibbonGroup();
-            this.btnTemplate = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
+            this.group7.SuspendLayout();
             this.group2.SuspendLayout();
             this.group3.SuspendLayout();
             this.group5.SuspendLayout();
             this.group6.SuspendLayout();
             this.group4.SuspendLayout();
-            this.group7.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab1.Groups.Add(this.group1);
+            this.tab1.Groups.Add(this.group7);
             this.tab1.Groups.Add(this.group2);
             this.tab1.Groups.Add(this.group3);
             this.tab1.Groups.Add(this.group5);
-            this.tab1.Groups.Add(this.group7);
             this.tab1.Groups.Add(this.group6);
             this.tab1.Groups.Add(this.group4);
             this.tab1.Label = "CATS";
@@ -78,9 +78,26 @@
             // 
             // btnSetings
             // 
+            this.btnSetings.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnSetings.Label = "Setting";
             this.btnSetings.Name = "btnSetings";
+            this.btnSetings.OfficeImageId = "BuildTeam";
+            this.btnSetings.ShowImage = true;
             this.btnSetings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            // 
+            // group7
+            // 
+            this.group7.Items.Add(this.btnTemplate);
+            this.group7.Name = "group7";
+            // 
+            // btnTemplate
+            // 
+            this.btnTemplate.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnTemplate.Label = "New Template";
+            this.btnTemplate.Name = "btnTemplate";
+            this.btnTemplate.OfficeImageId = "NewPage";
+            this.btnTemplate.ShowImage = true;
+            this.btnTemplate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnTemplate_Click);
             // 
             // group2
             // 
@@ -89,8 +106,11 @@
             // 
             // btnAddNew
             // 
-            this.btnAddNew.Label = "Add/EditTemplate";
+            this.btnAddNew.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnAddNew.Label = "Add/Edit Template";
             this.btnAddNew.Name = "btnAddNew";
+            this.btnAddNew.OfficeImageId = "EditPage";
+            this.btnAddNew.ShowImage = true;
             this.btnAddNew.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAddNew_Click);
             // 
             // group3
@@ -100,8 +120,11 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.Label = "Upload/Download Template";
+            this.btnEdit.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnEdit.Label = "Open Template";
             this.btnEdit.Name = "btnEdit";
+            this.btnEdit.OfficeImageId = "OpenContentType";
+            this.btnEdit.ShowImage = true;
             this.btnEdit.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnEdit_Click);
             // 
             // group5
@@ -111,8 +134,11 @@
             // 
             // btnSave
             // 
-            this.btnSave.Label = "Save Docment";
+            this.btnSave.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSave.Label = "Save Template";
             this.btnSave.Name = "btnSave";
+            this.btnSave.OfficeImageId = "SaveItem";
+            this.btnSave.ShowImage = true;
             this.btnSave.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSave_Click_1);
             // 
             // group6
@@ -123,10 +149,11 @@
             // 
             // btnPreview
             // 
+            this.btnPreview.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnPreview.Label = "Preview";
             this.btnPreview.Name = "btnPreview";
+            this.btnPreview.ShowImage = true;
             this.btnPreview.Visible = false;
-      
             // 
             // group4
             // 
@@ -135,20 +162,11 @@
             // 
             // btnLogIn
             // 
+            this.btnLogIn.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnLogIn.Label = "Log in to CATS";
             this.btnLogIn.Name = "btnLogIn";
+            this.btnLogIn.ShowImage = true;
             this.btnLogIn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLogIn_Click);
-            // 
-            // group7
-            // 
-            this.group7.Items.Add(this.btnTemplate);
-            this.group7.Name = "group7";
-            // 
-            // btnTemplate
-            // 
-            this.btnTemplate.Label = "New Template";
-            this.btnTemplate.Name = "btnTemplate";
-            this.btnTemplate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnTemplate_Click);
             // 
             // TemplateRibbon
             // 
@@ -160,6 +178,8 @@
             this.tab1.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.group7.ResumeLayout(false);
+            this.group7.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
             this.group3.ResumeLayout(false);
@@ -170,8 +190,6 @@
             this.group6.PerformLayout();
             this.group4.ResumeLayout(false);
             this.group4.PerformLayout();
-            this.group7.ResumeLayout(false);
-            this.group7.PerformLayout();
 
         }
 

@@ -186,6 +186,12 @@
     <Compile Include="Forms\Setting.designer.cs">
       <DependentUpon>Setting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TemplateType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TemplateType.Designer.cs">
+      <DependentUpon>TemplateType.cs</DependentUpon>
+    </Compile>
     <Compile Include="IDocumentProcessorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -204,6 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Setting.resx">
       <DependentUpon>Setting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TemplateType.resx">
+      <DependentUpon>TemplateType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -238,6 +247,7 @@
     <Compile Include="TemplateRibbon.Designer.cs">
       <DependentUpon>TemplateRibbon.cs</DependentUpon>
     </Compile>
+    <Compile Include="TemplateTypeDialoge.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
