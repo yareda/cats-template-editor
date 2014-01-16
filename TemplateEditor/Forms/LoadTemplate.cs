@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.ServiceModel;
 using System.Windows.Forms;
 using TemplateEditor.TemplateService;
 
@@ -8,6 +9,9 @@ namespace TemplateEditor.Forms
 {
     public partial class LoadTemplate : Form
     {
+        private static readonly string Uri = Properties.Settings.Default.ServerUrl.ToString();
+        EndpointAddress _address = new EndpointAddress(Uri);
+
         public LoadTemplate()
         {
             InitializeComponent();
@@ -41,7 +45,7 @@ namespace TemplateEditor.Forms
         private void btnView_Click(object sender, EventArgs e)
         {
             
-                //ListViewItem item = FileList.SelectedItems[0];
+              
 
                 // Strip off 'Root' from the full path
             string path = "storage/partial1.html";// item.SubItems[1].Text;
@@ -64,7 +68,7 @@ namespace TemplateEditor.Forms
                     {
                         Stream downloadStream;
 
-                        using (TemplateManagerClient client = new TemplateManagerClient())
+                        using (TemplateManagerClient client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address))
                         {
                             downloadStream = client.GetFile(path);
                         }
@@ -75,36 +79,14 @@ namespace TemplateEditor.Forms
                     Process.Start(dlg.FileName);
                 
             }
-            //OpenFileDialog dlg = new OpenFileDialog()
-            //{
-            //    Title = "Select a file to upload",
-            //    RestoreDirectory = true,
-            //    CheckFileExists = true
-            //};
-
-            //dlg.ShowDialog();
-
-            //if (!string.IsNullOrEmpty(dlg.FileName))
-            //{
-            //    string virtualPath = Path.GetFileName(dlg.FileName);
-
-            //    using (Stream uploadStream = new FileStream(dlg.FileName, FileMode.Open))
-            //    {
-            //        using (var client = new FileRepositoryServiceClient())
-            //        {
-            //            client.PutFile(new FileUploadMessage() { VirtualPath = virtualPath, DataStream = uploadStream });
-            //        }
-            //    }
-
-               
-            //}
+           
         }
 
 
         private  void PopulateTemplates(int templetId)
         {
 
-            var client = new TemplateManagerClient();
+            var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address);
             LstTemplates.DataSource = null;
             LstTemplates.DataSource = client.GetTemplates(templetId);
             LstTemplates.DisplayMember = "Name";
@@ -114,7 +96,7 @@ namespace TemplateEditor.Forms
 
         private void GetTemplateTypes()
         {
-            var client = new TemplateManagerClient();
+            var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address);
             cmbTemplateTypes.DataSource = null;
             cmbTemplateTypes.DataSource = client.GetTemplateTypes();
             cmbTemplateTypes.DisplayMember = "TemplateObject";

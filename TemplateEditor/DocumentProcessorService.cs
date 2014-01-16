@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.ServiceModel;
 using System.Windows.Forms;
 using TemplateEditor.TemplateService;
 
@@ -6,6 +7,9 @@ namespace TemplateEditor
 {
    public class DocumentProcessorService:IDocumentProcessorService
     {
+        private static readonly string Uri = Properties.Settings.Default.ServerUrl.ToString();
+        EndpointAddress _address = new EndpointAddress(Uri);
+
        public void UploadDocument(int templateType, string filepath)
        {
            if (!string.IsNullOrEmpty(filepath))
@@ -14,7 +18,7 @@ namespace TemplateEditor
 
                using (Stream uploadStream = new FileStream(filepath, FileMode.Open))
                {
-                   using (var client = new TemplateManagerClient())
+                   using (var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address))
                    {
                       client.PutFile(new FileUploadMessage() { VirtualPath = virtualPath, DataStream = uploadStream }.VirtualPath, uploadStream);
                    }
@@ -44,9 +48,9 @@ namespace TemplateEditor
                    {
                        Stream downloadStream;
 
-                       using (var client = new TemplateManagerClient())
+                       using (var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address))
                        {
-                           downloadStream = client.GetFile(path);
+                           downloadStream = client.GetFile(path + ".DOTX");
                        }
 
                        downloadStream.CopyTo(output);
@@ -76,7 +80,7 @@ namespace TemplateEditor
 
        public string PreviewDoc(string fileName)
        {
-           using (var client = new TemplateManagerClient())
+           using (var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address))
            {
                var docFile = client.PreviewTemplate(filePath: fileName);
                return docFile;

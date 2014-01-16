@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Windows.Forms;
 using TemplateEditor.TemplateService;
@@ -12,9 +13,11 @@ namespace TemplateEditor.Forms
 {
     public partial class TemplateType : Form
     {
+        private static readonly string Uri = Properties.Settings.Default.ServerUrl.ToString();
+        EndpointAddress _address = new EndpointAddress(Uri);
+
         // add a delegate
-        public delegate void TemplateTypeUpdateHandler(object sender,
-        TemplateTypeEveArguments e);
+        public delegate void TemplateTypeUpdateHandler(object sender,TemplateTypeEveArguments e);
 
         // add an event of the delegate type
         public event TemplateTypeUpdateHandler TemplateTypeUpdated;
@@ -35,7 +38,7 @@ namespace TemplateEditor.Forms
 
         private void GetTemplateTypes()
         {
-            var client = new TemplateManagerClient();
+            var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address);
             cmbTemplateTypes.DataSource = null;
             cmbTemplateTypes.DataSource = client.GetTemplateTypes();
             cmbTemplateTypes.DisplayMember = "TemplateObject";
@@ -62,21 +65,17 @@ namespace TemplateEditor.Forms
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+           
             this.Dispose();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            
             var templateType = int.Parse(cmbTemplateTypes.SelectedValue.ToString());
             var fileName = txtFileName.Text.Trim();
 
             var arguments = new TemplateTypeEveArguments(templateType,fileName);
             TemplateTypeUpdated(this, arguments);
-
-           
-           
             Dispose();
         }
         

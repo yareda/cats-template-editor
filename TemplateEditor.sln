@@ -5,14 +5,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateEditor", "TemplateE
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|Any CPU = CD_ROM|Any CPU
 		Debug|Any CPU = Debug|Any CPU
+		DVD-5|Any CPU = DVD-5|Any CPU
 		Release|Any CPU = Release|Any CPU
+		SingleImage|Any CPU = SingleImage|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A342B533-532A-469B-9D44-936EDCD6783D}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{A342B533-532A-469B-9D44-936EDCD6783D}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{A342B533-532A-469B-9D44-936EDCD6783D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A342B533-532A-469B-9D44-936EDCD6783D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A342B533-532A-469B-9D44-936EDCD6783D}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{A342B533-532A-469B-9D44-936EDCD6783D}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
 		{A342B533-532A-469B-9D44-936EDCD6783D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A342B533-532A-469B-9D44-936EDCD6783D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A342B533-532A-469B-9D44-936EDCD6783D}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{A342B533-532A-469B-9D44-936EDCD6783D}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

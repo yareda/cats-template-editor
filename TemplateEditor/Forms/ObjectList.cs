@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ServiceModel;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Word;
 using TemplateEditor.TemplateService;
@@ -7,6 +8,9 @@ namespace TemplateEditor.Forms
 {
     public partial class ObjectList : Form
     {
+        private static readonly string Uri = Properties.Settings.Default.ServerUrl.ToString();
+        EndpointAddress _address = new EndpointAddress(Uri);
+
         public ObjectList()
         {
             InitializeComponent();
@@ -20,7 +24,7 @@ namespace TemplateEditor.Forms
         private void LoadTemplateTypes()
         {
 
-            var client = new TemplateManagerClient();
+            var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address);
             cmbTemplateTypes.DataSource = null;
             cmbTemplateTypes.DataSource = client.GetTemplateTypes();
             cmbTemplateTypes.DisplayMember = "TemplateObject";
@@ -31,7 +35,7 @@ namespace TemplateEditor.Forms
 
         private void GetTemplates(int templetTypeId)
         {
-            var client = new TemplateManagerClient();
+            var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address);
             LstTemplates.DataSource = null;
             LstTemplates.DataSource = client.GetTemplates(templetTypeId);
             LstTemplates.DisplayMember = "Name";
@@ -41,7 +45,7 @@ namespace TemplateEditor.Forms
 
         private void ShowFields(int templateId)
         {
-            var client = new TemplateManagerClient();
+            var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address);
 
             LstFields.DataSource = null;
             LstFields.Items.Clear();

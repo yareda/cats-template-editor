@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Word;
@@ -16,13 +17,16 @@ namespace TemplateEditor
 {
     public partial class TemplateRibbon
     {
+        private static readonly string Uri = Properties.Settings.Default.ServerUrl.ToString();
+        EndpointAddress _address = new EndpointAddress(Uri);
+
         public int tTemplateType;
         public string newFileName;
 
         private void TemplateRibbon_Load(object sender, RibbonUIEventArgs e)
         {
             DisableRibbon();
-            GetTemplateTypes();
+            //GetTemplateTypes();
 
         }
 
@@ -56,7 +60,7 @@ namespace TemplateEditor
             btnSave.Enabled = false;
             btnAddNew.Enabled = false;
             btnEdit.Enabled = false;
-            btnSetings.Enabled = false;
+           // btnSetings.Enabled = false;
             btnTemplate.Enabled = false;
             
 
@@ -67,7 +71,7 @@ namespace TemplateEditor
             btnSave.Enabled = true;
             btnAddNew.Enabled = true;
             btnEdit.Enabled = true;
-            btnSetings.Enabled = true;
+           // btnSetings.Enabled = true;
             btnLogIn.Visible = false;
             btnTemplate.Enabled = false;
            
@@ -104,70 +108,51 @@ namespace TemplateEditor
 
             try
             {
-                
-            
-            IDocumentProcessorService documentProcessorService = new DocumentProcessorService();
 
 
-            _Application wordApp;
-            try
-            {
-                wordApp = (_Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
-            }
-            catch (Exception)
-            {
-
-                wordApp = new Microsoft.Office.Interop.Word.Application();
-            }
-
-           
-            var aDoc = wordApp.ActiveDocument;
-           
-
-            
-
-            string fileName = aDoc.Name;
-
-             int dotPosition = fileName.IndexOf(".", 1, System.StringComparison.Ordinal);
-             fileName = fileName.Substring(0, aDoc.Name.Length - (aDoc.Name.Length - dotPosition));
-
-            if (StringIsGuid(fileName));
-            {
-                var templateType = new TemplateType();
-                templateType.TemplateTypeUpdated +=
-                    new TemplateType.TemplateTypeUpdateHandler(TemplateType_ButtonClicked);
-              
-                templateType.ShowDialog();
-                fileName = newFileName;
-            }
-          
-
-            //switch (dotPosition)
-            //{
-            //    case -1:
-            //        {
-            //             Ask where it should be saved
-            //            var dlg = new SaveFileDialog()
-            //            {
-            //                RestoreDirectory = true,
-            //                OverwritePrompt = true,
-            //                Title = "Enter the file name of the template",
-
-            //            };
-            //            dlg.ShowDialog();
-
-            //            fileName = Path.GetFileName(dlg.FileName);
-            //        }
-            //        break;
-            //    default:
-            //        fileName = fileName.Substring(0, aDoc.Name.Length - (aDoc.Name.Length - dotPosition));
-                  
-            //        break;
-            //}
+                IDocumentProcessorService documentProcessorService = new DocumentProcessorService();
 
 
-           
-            //OBJECT OF MISSING "NULL VALUE"
+                _Application wordApp;
+                try
+                {
+                    wordApp = (_Application) System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
+                }
+                catch (Exception)
+                {
+
+                    wordApp = new Microsoft.Office.Interop.Word.Application();
+                }
+
+
+                var aDoc = wordApp.ActiveDocument;
+
+
+
+
+                string fileName = aDoc.Name;
+
+                int dotPosition = fileName.IndexOf(".", 1, System.StringComparison.Ordinal);
+                if (dotPosition != -1)
+                {
+                    fileName = fileName.Substring(0, aDoc.Name.Length - (aDoc.Name.Length - dotPosition));
+                }
+            if (StringIsGuid(fileName))
+                 {
+                     var templateType = new TemplateType();
+                     templateType.TemplateTypeUpdated +=
+                         new TemplateType.TemplateTypeUpdateHandler(TemplateType_ButtonClicked);
+
+                     templateType.ShowDialog();
+                     fileName = newFileName;
+                 }
+
+             //}
+
+
+
+
+                //OBJECT OF MISSING "NULL VALUE"
             Object oMissing = Type.Missing;
 
             if (fileName.Trim() == string.Empty)
@@ -184,16 +169,15 @@ namespace TemplateEditor
                             ref oMissing, ref oMissing);
 
             aDoc.Close();
-            documentProcessorService.UploadDocument(tTemplateType, fileName + ".dotx");
-            documentProcessorService.DeleteDocument(fileName + ".dotx");
+            documentProcessorService.UploadDocument(tTemplateType, fileName + ".DOTX");
+            documentProcessorService.DeleteDocument(fileName + ".DOTX");
             InsertToLetterTemplate(fileName, tTemplateType);
             InsertToTemplate(fileName, tTemplateType);
             MessageBox.Show("Template is Uploaded.", "Saving", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch
             {
-                MessageBox.Show("There was a problem in saving the template.", "Saving", MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                MessageBox.Show("There was a problem in saving the template.", "Saving", MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
 
 
@@ -226,7 +210,7 @@ namespace TemplateEditor
                 TemplateType = templateType
             };
 
-            var client = new TemplateManagerClient();
+            var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager",_address);
             client.InsertToLetterTemplate(letter);
 
         }
@@ -242,7 +226,7 @@ namespace TemplateEditor
                 TemplateType = templateType
             };
 
-            var client = new TemplateManagerClient();
+            var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address);
             client.InsertToTemplate(letter);
 
         }
@@ -280,7 +264,7 @@ namespace TemplateEditor
                             ref oMissing, ref oMissing);
 
                 aDoc.Close();
-                documentProcessorService.UploadDocument(1, oSaveAsFile + ".dotx");
+                documentProcessorService.UploadDocument(1, oSaveAsFile + ".DOTX");
 
                 var filePath = Properties.Settings.Default.TemplatePath.ToString(CultureInfo.InvariantCulture) +
                                oSaveAsFile;
@@ -291,39 +275,49 @@ namespace TemplateEditor
                     {
                         Stream downloadStream;
 
-                        using (var client = new TemplateManagerClient())
+                        using (var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address))
                         {
-                            downloadStream = client.GetFile(oSaveAsFile.ToString());
+                            downloadStream = client.GetFile(oSaveAsFile.ToString() + ".DOTX");
                         }
 
                         downloadStream.CopyTo(output);
                         downloadStream.Close();
                     }
-                    Process.Start("WINWORD.EXE", filePath + ".DOTX");
+                    Process.Start("WINWORD.EXE", filePath);
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("There was a problem in creating a new template.", "Creating new Template", MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                MessageBox.Show("There was a problem in creating a new template.    " + ex.Message , "Creating new Template", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error); 
             }
         }
 
         private void GetTemplateTypes()
         {
-            var client = new TemplateManagerClient();
-            var templateTypes = client.GetTemplateTypes();
-
-            foreach (var templateType in templateTypes)
+            try
             {
-                RibbonDropDownItem item = this.Factory.CreateRibbonDropDownItem();
-                item.Label = templateType.TemplateObject.ToString();
-                
-               // cmbTemplateType.Items.Add(item);
+                var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address);
+                var templateTypes = client.GetTemplateTypes();
+
+                foreach (var templateType in templateTypes)
+                {
+                    RibbonDropDownItem item = this.Factory.CreateRibbonDropDownItem();
+                    item.Label = templateType.TemplateObject.ToString();
+
+                    // cmbTemplateType.Items.Add(item);
+                }
+
+                client.Close();
             }
-           
-            client.Close();
+            catch (Exception)
+            {
+
+                MessageBox.Show("Unable to connect to the Server. Please check the server URL", "Server Connection",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
         }
         
             

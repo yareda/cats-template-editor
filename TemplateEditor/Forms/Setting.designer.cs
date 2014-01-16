@@ -32,6 +32,7 @@
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.btnDefault = new System.Windows.Forms.Button();
             this.btnUseCurrent = new System.Windows.Forms.Button();
+            this.btnTest = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -72,11 +73,22 @@
             this.btnUseCurrent.UseVisualStyleBackColor = true;
             this.btnUseCurrent.Click += new System.EventHandler(this.btnUseCurrent_Click);
             // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(412, 48);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(75, 23);
+            this.btnTest.TabIndex = 5;
+            this.btnTest.Text = "Test Connection";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
             // Setting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 75);
+            this.Controls.Add(this.btnTest);
             this.Controls.Add(this.btnUseCurrent);
             this.Controls.Add(this.btnDefault);
             this.Controls.Add(this.txtUrl);
@@ -97,5 +109,6 @@
         private System.Windows.Forms.TextBox txtUrl;
         private System.Windows.Forms.Button btnDefault;
         private System.Windows.Forms.Button btnUseCurrent;
+        private System.Windows.Forms.Button btnTest;
     }
 }

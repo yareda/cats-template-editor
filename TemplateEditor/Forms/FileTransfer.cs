@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.ServiceModel;
 using System.Windows.Forms;
 using TemplateEditor.TemplateService;
 
@@ -8,6 +9,9 @@ namespace TemplateEditor.Forms
 {
     public partial class FileTransfer : Form
     {
+        private static readonly string Uri = Properties.Settings.Default.ServerUrl.ToString();
+        EndpointAddress _address = new EndpointAddress(Uri);
+
         public FileTransfer()
         {
             InitializeComponent();
@@ -24,7 +28,7 @@ namespace TemplateEditor.Forms
         private void FillGrid()
         {
             var templateType = (int) cmbTemplateTypes.SelectedValue;
-            var client = new TemplateManagerClient();
+            var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address);
             var templates = client.GetTemplates(templateType);
             FileList.Items.Clear();
             foreach (var template in templates)
@@ -58,7 +62,7 @@ namespace TemplateEditor.Forms
                 {
                     string virtualPath = FileList.SelectedItems[0].SubItems[1].Text;
 
-                    using (var client = new TemplateManagerClient())
+                    using (var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address))
                     {
                         client.DeleteFile(virtualPath + ".dotx");
                         client.DeleteTemplate(virtualPath);
@@ -90,7 +94,17 @@ namespace TemplateEditor.Forms
                 {
                     this.Close();
                     this.Dispose();
-                    Process.Start("WINWORD.EXE",path + ".dotx");
+                    try
+                    {
+                      Process.Start("WINWORD.EXE", path);
+                      
+                    }
+                    catch (Exception)
+                    {
+
+                        Process.Start("WINWORD.EXE", path);
+                    }
+                    
                 }
             }
         }
@@ -102,7 +116,7 @@ namespace TemplateEditor.Forms
 
         private void GetTemplateTypes()
         {
-            var client = new TemplateManagerClient();
+            var client = new TemplateManagerClient("BasicHttpBinding_ITemplateManager", _address);
             cmbTemplateTypes.DataSource = null;
             cmbTemplateTypes.DataSource = client.GetTemplateTypes();
             cmbTemplateTypes.DisplayMember = "TemplateObject";
